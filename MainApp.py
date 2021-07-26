@@ -4,6 +4,9 @@ import numpy as np
 import pandas as pd
 
 
+st.title("Survival Predicting")
+st.subheader("Will you survive?")
+
 p_class = st.selectbox("Class? ", ("1","2","3"),index=2)
 
 p_age = st.slider('Age?', 0.4, 80.0, 29.0,step=1.0)
