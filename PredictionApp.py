@@ -1,8 +1,7 @@
 import re
 import pandas as pd
 import numpy as np
-from pandas.core.dtypes.missing import notnull
-import streamlit as st
+import pickle
 
 
 
@@ -59,79 +58,17 @@ from sklearn.linear_model import LogisticRegression
 logmodel = LogisticRegression(solver='liblinear')
 logmodel.fit(X_train,y_train)
 predictions = logmodel.predict(X_test)
+
+
 from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
 
-p_class = st.selectbox("Class? ", ("1","2","3"),index=2)
-
-p_age = st.slider('Age?', 0.4, 80.0, 29.0,step=1.0)
-
-p_fare = st.slider('Money Spent?', 0, 512, 32)
-
-p_gender = st.radio("Gender ", ("Female","Male"),index=1)
-
-if p_gender == "Male":
-    p_gender = 1
-else:
-    p_gender = 0
-
-#Southampton
-#Queenstown
-#Cherbourg
-
-# After leaving Southampton on 10 April 1912,
-#  Titanic called at Cherbourg in France
-#  and Queenstown (now Cobh) in Ireland,
-#  before heading west to New York.
-
-p_port = st.radio("Embarking Port", ("Southampton (England)","Queenstown (Ireland)","Cherbourg (France)"),index=0)
-q = 0
-s = 0
-if p_port == "Southampton (England)":
-    s = 1
-elif p_port== "Queenstown (Ireland)":
-    q = 1
-    
+print(classification_report(y_test,predictions))
+print(confusion_matrix(y_test,predictions))
 
 
-p_alone = st.checkbox("Alone",value=True)
-
-
-
-p_relatives = 0
-
-if p_alone == False:
-    p_alone = 0
-    rels = st.text_input("Relatives? ",max_chars=2,value=1)
-    if rels != None:
-        p_relatives = int(rels)
-    else:
-        p_alone = 1
-
-
-isSurv = st.button("OK")
-
-if isSurv:
-
-    to_predict = pd.DataFrame(
-    {"Pclass":int(p_class),
-    "Age":np.float64(p_age),
-    "Fare": np.float64(p_fare),
-    "male":np.uint8(p_gender),
-    "Q":np.uint8(q),
-    "S":np.uint8(s),
-    "relatives":int(p_relatives),
-    "was_alone": p_alone,
-    },index=[0])
-
-    st.write(to_predict)
-
-    res = logmodel.predict(to_predict)
-
-    if res[0] == 0:
-        st.write("Oh sorry!     you won't make it...")
-    else:
-        st.write("Congratulations!    you will make it!")
-
+# saving model
+pickle.dump(logmodel,open("trained_model.sa","wb"))
 
 
 
