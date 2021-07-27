@@ -55,6 +55,8 @@ if p_alone == False:
         p_relatives = int(rels)
     else:
         p_alone = 1
+else:
+    p_alone = 1
 
 
 isSurv = st.button("OK")
