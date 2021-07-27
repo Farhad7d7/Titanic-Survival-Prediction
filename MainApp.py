@@ -2,10 +2,10 @@ import pickle
 import streamlit as st
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import LogisticRegression
 
 
-
+st.set_page_config(page_title="Survival Predicting Application",
+layout="wide")
 st.title("Survival Predicting")
 st.subheader("Will you survive?")
 
